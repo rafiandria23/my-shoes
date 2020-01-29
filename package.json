@@ -1,0 +1,34 @@
+{
+  "name": "my-shoes",
+  "version": "1.0.0",
+  "description": "Hacktiv8 Phase 1 Pair Programming.",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafiandria23/my-shoes.git"
+  },
+  "keywords": [
+    "shoes",
+    "nodejs",
+    "express",
+    "ejs",
+    "sequelize",
+    "postgresql"
+  ],
+  "author": "Adam Rafiandri, Purandra Ramadhan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rafiandria23/my-shoes/issues"
+  },
+  "homepage": "https://github.com/rafiandria23/my-shoes#readme",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "pg": "^7.17.1",
+    "sequelize": "^5.21.3"
+  }
+}
