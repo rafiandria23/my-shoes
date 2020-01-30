@@ -12,7 +12,10 @@ module.exports = (sequelize, DataTypes) => {
   }, { sequelize });
   
   Shoe.associate = function(models) {
-    // associations can be defined here
+    Shoe.belongsToMany(models.Member,{
+      through : models.MemberShoe,
+      foreignKey : "ShoeId"
+    })
   };
   
   return Shoe;
