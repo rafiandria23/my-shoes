@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include('partials/head.ejs') %>
+
+<body>
+  <!-- HEADER -->
+  <% include('partials/header.ejs') %>
+  <!-- HEADER -->
+
+
+<form method="POST">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="name">Full Name</label>
+      <input type="text" class="form-control" name="name" id="name" placeholder="Full Name">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender" class="form-control">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="age">Age</label>
+      <input type="number" class="form-control" id="age" name="age">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="shoe_size">Shoe Size</label>
+      <input type="number" class="form-control" id="shoe_size" name="shoe_size">
+    </div>
+  </div>
+  <% if (typeof errorMessages != "undefined") { %>
+    <% errorMessages.forEach(errorMessage => { %>
+      <div class="alert alert-danger btn" role="alert">
+        <%= errorMessage %> 
+      </div>
+    <% }); %>
+    <br>
+  <% } %>
+  <button type="submit" class="btn btn-primary">Sign Up</button>
+</form>
+
+
+  <!-- FOOTER -->
+  <% include('partials/footer.ejs') %>
+  <!-- FOOTER -->
+</body>
+
+</html>
