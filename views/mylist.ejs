@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <% include('partials/head.ejs') %> 
+  <body>
+    <!-- HEADER -->
+    <% include('partials/header.ejs') %>
+    <!-- HEADER -->
+
+    <!-- PROFILE CARD -->
+    <div class="card" style="width: 18rem;">
+      <img class="card-img-top" src="" alt="<%= member.name %>">
+      <div class="card-body">
+        <h5 class="card-title"><%= member.name %> </h5>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <b>Username</b>
+            <small><%= member.username %></small>
+          </li>
+          <li class="list-group-item">
+            <b>Age</b>
+            <small><%= member.age %></small>
+          </li>
+          <li class="list-group-item">
+            <b>Shoe Size</b>
+            <small><%= member.shoe_size %></small>
+          </li>
+        </ul>
+        <% if (pageInfo.session.email == member.email) { %>
+          <a href="<%= `/mylist/edit/${member.id}` %>" class="btn btn-primary">Go somewhere</a>
+        <% } %>
+      </div>
+    </div>
+    <!-- PROFILE CARD -->
+
+    <!-- SHOES LIST -->
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Type</th>
+          <% if (pageInfo.session.email == member.email) { %>
+            <th scope="col">Action</th>
+          <% } %>
+        </tr>
+      </thead>
+      
+      <% if (pageInfo.session.email == member.email) { %>
+        <a class="btn btn-primary" href="/explore">Add Shoes</a>
+      <% } %>
+      
+      <tbody>
+        <% shoes.forEach(shoe => { %>
+          <tr>
+            <th scope="row"><%= shoe.id %></th>
+            <td><%= shoe.name %></td>
+            <td><%= shoe.brand%></td>
+            <td><%= shoe.type %></td>
+            <% if (pageInfo.session.email == member.email) { %>
+              <td><a class="btn btn-danger" href="<%= `mylist/delete/shoes/${shoe.id}` %>">Delete</a></td>
+            <% } %>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <!-- SHOES LIST -->
+
+    <!-- FOOTER -->
+    <% include('partials/footer.ejs') %> 
+    <!-- FOOTER -->
+  </body>
+</html>

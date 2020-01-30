@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include('partials/head.ejs') %>
+
+<body>
+  <!-- HEADER -->
+  <% include('partials/header.ejs') %>
+  <!-- HEADER -->
+
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Username</th>
+      <th scope="col">Shoe Size</th>
+      <th scope="col">Shoes Count</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% members.forEach((member, index) => { %>
+      <tr>
+        <th scope="row"><%= index + 1 %></th>
+        <td><%= member.username %></td>
+        <td><%= member.shoe_size %></td>
+        <td><%= member.Shoes.length %></td>
+        <td><a href="<%= `/mylist/${member.id}` %>" class="btn btn-primary">View Profile<a></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+
+
+  <!-- FOOTER -->
+  <% include('partials/footer.ejs') %>
+  <!-- FOOTER -->
+</body>
+
+</html>
