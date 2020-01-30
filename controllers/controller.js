@@ -49,10 +49,11 @@ class Controller {
 
   static showMyList(req,res) {
     const pageInfo = {};
-    const memberId = req.session.user.id;
+    const memberId = req.session.user.id;;
+
     Member
       .findByPk(memberId, {
-        include: [Shoe,Comment]
+        include: [Shoe, Comment]
       })
       .then(member => {
         pageInfo.title = member.name;
@@ -66,7 +67,7 @@ class Controller {
 
   static showOtherProfile(req, res) {
     const pageInfo = {};
-    Member.findByPk(req.params.memberId, {include: [Shoe,Comment]})
+    Member.findByPk(req.params.memberId, { include: [Shoe, Comment] })
       .then(member => {
         pageInfo.session = req.session;
         pageInfo.title = member.name;
@@ -141,7 +142,11 @@ class Controller {
   }
 
   static registerForm(req, res) {
-    res.render("register");
+    const pageInfo = {
+      title: "Register",
+      session: req.session
+    };
+    res.render("register", { pageInfo });
   }
 
   static registerMember(req, res) {
@@ -165,21 +170,23 @@ class Controller {
       });
   }
 
-  static addComment(req,res){
-    let member= req.params.memberId;
-    let objInput ={
-      MemberId  : member,
-      Comment   : req.body.Comment
-    }
+  static addComment(req, res) {
+    const member = req.params.memberId;
+    const objInput = {
+      MemberId: member,
+      Comment: req.body.Comment
+    };
+
     Comment
       .create(objInput)
-      .then(()=>{
+      .then(result => {
         res.redirect("back")
       })
-      .catch(err=>{
+      .catch(err => {
         res.send(err);
-      })
+      });
   }
+  
   static deleteShoes(req,res){
     MemberShoe
       .destroy({
