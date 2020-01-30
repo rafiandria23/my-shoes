@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<% include('partials/head.ejs') %>
+<%- include('partials/head.ejs') %>
 
 <body>
   <!-- HEADER -->
-  <% include('partials/header.ejs') %>
+  <%- include('partials/header.ejs') %>
   <!-- HEADER -->
 
 
@@ -50,10 +50,7 @@
                   </ul>
                   <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <a href="<%= `/mylist/addshoes?shoeId=${shoe.id}` %>" class="btn btn-sm btn-outline-secondary">Add</a>
-                      <% if (pageInfo.session.role == 'Admin') { %>
-                        <a href="" class="btn btn-sm btn-outline-secondary">Edit</a>
-                      <% } %>
+                      <a href="<%= `/mylist/addshoes/${shoe.id}` %>" class="btn btn-sm btn-outline-secondary">Add to My Profile</a>
                     </div>
                   </div>
                 </div>
@@ -69,7 +66,7 @@
 
 
   <!-- FOOTER -->
-  <% include('partials/footer.ejs') %>
+  <%- include('partials/footer.ejs') %>
   <!-- FOOTER -->
 </body>
 

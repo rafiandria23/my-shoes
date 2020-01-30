@@ -4,9 +4,6 @@
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item <%= pageInfo.title == 'home' ? 'active' : '' %>">
-          <a class="nav-link" href="/">Home</a>
-        </li>
         <li class="nav-item <%= pageInfo.title == 'MyList' ? 'active' : '' %>">
           <a class="nav-link" href="/mylist">MyList</a>
         </li>
@@ -16,20 +13,16 @@
         <li class="nav-item <%= pageInfo.title == 'Explore' ? 'active' : '' %>">
           <a class="nav-link" href="/explore">Explore</a>
         </li>
-        <% if (typeof pageInfo.session != "undefined") { %>
+        <% if (typeof pageInfo.session.user != "undefined") { %>
           <li class="nav-item">
-            <a class="btn btn-outline-light my-2 my-sm-0" href="/logout">Logout</a>
+            <a class="btn btn-outline-light my-2 my-sm-0" href="/user/logout">Logout</a>
           </li>
         <% } else { %>
           <li class="nav-item">
-            <a class="btn btn-outline-light my-2 my-sm-0" href="/login">Login</a>
+            <a class="btn btn-outline-light my-2 my-sm-0" href="/user/login">Login</a>
           </li>
         <% } %>
       </ul>
-      <!-- <form class="form-inline my-2 my-lg-0" method="GET">
-        <input class="form-control mr-sm-2" type="search" placeholder="Find your shoes!">
-        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">FIND!</button>
-      </form> -->
     </div>
   </nav>
 </header>
