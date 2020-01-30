@@ -1,61 +1,93 @@
 const { Member, MemberShoe, Shoe,Comment } = require('../models/index');
-var bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
+
 class Controller {
-  static loginForm(req,res){
-    res.render("loginform")
+  static loginForm(req, res) {
+    const pageInfo = {
+      title: "Login",
+      session: req.session
+    };
+    res.render("login", { pageInfo });
   }
-  static memberLogin(req,res){
+  
+  static memberLogin(req, res) {
     Member
-        .findOne({
-            where:{
-                email:req.body.email
-            }
-        })
-        .then (data=>{
-            if(bcrypt.compareSync(req.body.password, data.password)){
-              req.session.user={
-                email: data.email,
-                age: data.age, 
-               id:data.id,
-               name:data.name,
-               age:data.age
-               }
-            res.redirect("/community")
-            }
-            else{
-              throw new err("pass salah");
-            }
-        })
-        .catch(err=>{
-            console.log(err)
-            res.send("password /email salah");
-        })
+      .findOne({
+        where: {
+          username: req.body.username
+        }
+      })
+      .then(data => {
+        if (bcrypt.compareSync(req.body.password, data.password)) {
+          req.session.user = {
+            username: data.username,
+            email: data.email,
+            age: data.age,
+            id: data.id,
+            name: data.name,
+            age: data.age
+          }
+
+          res.redirect("/community");
+        }
+        else {
+          throw new Error("Username or password is wrong!");
+        }
+      })
+      .catch(err => {
+        const errorMessages = err.message;
+        // console.log(err.message);
+        res.render("login", {errorMessage})
+      });
   }
-  static showMyList(req,res){
-    let memberId=req.session.user.id
+
+  static showMyList(req,res) {
+    const pageInfo = {};
+    const memberId = req.session.user.id;
     Member
-      .findByPk(memberId,{
-        include:[Shoe], order:[["id","asc"]]
+      .findByPk(memberId, {
+        include: [Shoe]
       })
-      .then(data=>{
-        res.send(data)
+      .then(member => {
+        pageInfo.title = member.name;
+        pageInfo.session = req.session.user;
+        res.render("mylist", { pageInfo, member });
       })
-      .catch(err=>{
+      .catch(err => {
         res.send(err);
-      })
+      });
   }
-  static showCommunity(req,res){
+
+  static showOtherProfile(req, res) {
+    const pageInfo = {};
+    Member.findByPk(req.params.memberId, {include: [Shoe]})
+      .then(member => {
+        pageInfo.session = req.session.user;
+        pageInfo.title = member.name;
+        res.render("mylist", { pageInfo, member });
+      })
+      .catch(err => {
+        res.send(err);
+      });
+  }
+
+  static showCommunity(req, res) {
+    const pageInfo = {
+      title: 'Community',
+      session: req.session
+    };
     Member
       .findAll({
-        include:[Shoe]
+        include: [Shoe], order: [["id", "ASC"]]
       })
-      .then(data=>{
-        res.send(data);
+      .then(members => {
+        res.render("community", { pageInfo, members });
       })
-      .catch(err=>{
+      .catch(err => {
         res.send(err);
-      })
+      });
   }
+
   static updateForm(req,res){
     Member
       .findOne({
@@ -70,6 +102,7 @@ class Controller {
         res.send(err);
       })
   }
+
   static updateMember(req,res){
     let objInput={
           name: req.body.name,
@@ -88,42 +121,46 @@ class Controller {
       res.redirect("/mylist")
     })
   }
-  static deleteAccount(req,res){
+
+  static deleteAccount(req, res) {
     Member.destroy({
-      where:{
-        id:req.params.id
+      where: {
+        id: req.params.id
       }
     })
-    .then(()=>{
-      res.redirect("/login")
-    })
-    .catch(err=>{
-      res.send(err);
-    })
+      .then(() => {
+        res.redirect("/login");
+      })
+      .catch(err => {
+        res.send(err);
+      });
   }
-  static registerForm(req,res){
-    res.render("addform");
+
+  static registerForm(req, res) {
+    res.render("register");
   }
-  static registerMember(req,res){
-    let objInput={
+
+  static registerMember(req, res) {
+    const objInput = {
       name: req.body.name,
-      username:req.body.username,
-      gender:req.body.gender,
-      password:req.body.password,
-      age:req.body.age,
-      email:req.body.email,
-      shoe_size: req.body.shoe_size,
+      username: req.body.username,
+      gender: req.body.gender,
+      password: req.body.password,
+      age: req.body.age,
+      email: req.body.email,
+      shoe_size: req.body.shoe_size
+    };
+
+    Member
+      .create(objInput)
+      .then(data => {
+        res.redirect("/community");
+      })
+      .catch(err => {
+        res.send(err);
+      });
   }
-  Member
-    .create(objInput)  
-    .then(data=>{
-      res.redirect("/community")
-    })
-    .catch(err=>{
-      console.log(err)
-      res.send(err)
-    })
-  }
+
   static addComment(req,res){
     member: req.params.id;
     let objInput ={
@@ -140,50 +177,64 @@ class Controller {
   static deleteShoes(req,res){
     MemberShoe
       .destroy({
-        where:{
-          ShoeId  : req.params.id,
-          MemberId   : req.session.user.id
+        where: {
+          ShoeId: req.params.shoeId,
+          MemberId: req.session.user.id
         }
       })
-      .then(()=>{
+      .then(() => {
         res.redirect("/mylist");
       })
-      .catch(err=>{
+      .catch(err => {
         res.send(err);
-      })
+      });
   }
-  static addShoes(req,res){
-    if(typeof req.query.shoeId !== "undefined"){
-      let objInput = {
-        ShoeId  : req.query.shoeId,
-        MemberId   : req.session.user.id
-      }
+
+  static addShoes(req, res) {
+    if(typeof req.params.shoeId != "undefined"){
+      const objInput = {
+        ShoeId: req.params.shoeId,
+        MemberId: req.session.user.id
+      };
+
       MemberShoe
         .create(objInput)
-        .then(()=>{
+        .then(result => {
           res.redirect("/mylist");
         })
-        .catch(err=>{
+        .catch(err => {
           res.send(err);
-        })
+        });
     }
-    else{
+    else {
       res.redirect("/explore")
-    } 
+    }
   }
-  static showExplore(req,res){
-    res.render("explore");
+
+  static showExplore(req, res) {
+    const pageInfo = {
+      title: "Explore"
+    };
+
+    Shoe.findAll()
+      .then(shoes => {
+        res.render("explore", { pageInfo, shoes });
+      })
+      .catch(err => {
+        res.send(err);
+      });
   }
+
   static logout(req,res){
-    req.session.destroy((err)=>{
-        if(err){
-            res.send(err)
-        }
-        else{
-            res.redirect("/user/login")
-        }
-    })
-}
+    req.session.destroy((err) => {
+      if (err) {
+        res.send(err);
+      }
+      else {
+        res.redirect("/user/login");
+      }
+    });
+  }
 }
 
 module.exports = Controller

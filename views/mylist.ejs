@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-  <% include('partials/head.ejs') %> 
+  <%- include('partials/head.ejs') %> 
   <body>
     <!-- HEADER -->
-    <% include('partials/header.ejs') %>
+    <%- include('partials/header.ejs') %>
     <!-- HEADER -->
 
     <!-- PROFILE CARD -->
@@ -13,20 +13,20 @@
         <h5 class="card-title"><%= member.name %> </h5>
         <ul class="list-group">
           <li class="list-group-item">
-            <b>Username</b>
-            <small><%= member.username %></small>
+            <small>Username</small>
+            <b><%= member.username %></b>
           </li>
           <li class="list-group-item">
-            <b>Age</b>
-            <small><%= member.age %></small>
+            <small>Age</small>
+            <b><%= member.age %></b>
           </li>
           <li class="list-group-item">
-            <b>Shoe Size</b>
-            <small><%= member.shoe_size %></small>
+            <small>Shoe Size</small>
+            <b><%= member.shoe_size %></b>
           </li>
         </ul>
         <% if (pageInfo.session.email == member.email) { %>
-          <a href="<%= `/mylist/edit/${member.id}` %>" class="btn btn-primary">Go somewhere</a>
+          <a href="<%= `/mylist/edit/${member.id}` %>" class="btn btn-primary">Edit Profile</a>
         <% } %>
       </div>
     </div>
@@ -51,14 +51,14 @@
       <% } %>
       
       <tbody>
-        <% shoes.forEach(shoe => { %>
+        <% member.Shoes.forEach(shoe => { %>
           <tr>
             <th scope="row"><%= shoe.id %></th>
             <td><%= shoe.name %></td>
             <td><%= shoe.brand%></td>
             <td><%= shoe.type %></td>
             <% if (pageInfo.session.email == member.email) { %>
-              <td><a class="btn btn-danger" href="<%= `mylist/delete/shoes/${shoe.id}` %>">Delete</a></td>
+              <td><a class="btn btn-danger" href="<%= `/mylist/delete/shoes/${shoe.id}` %>">Delete</a></td>
             <% } %>
           </tr>
         <% }); %>
@@ -67,7 +67,7 @@
     <!-- SHOES LIST -->
 
     <!-- FOOTER -->
-    <% include('partials/footer.ejs') %> 
+    <%- include('partials/footer.ejs') %> 
     <!-- FOOTER -->
   </body>
 </html>

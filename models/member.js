@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     gender: {
       type:DataTypes.STRING,
       validate:{
-        isIn: [['male', 'female',"other"]]
+        isIn: [['Male', 'Female',"Other"]]
       }
     },
     age:{

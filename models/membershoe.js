@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   }, { sequelize });
   
   MemberShoe.associate = function(models) {
-    MemberShoe.belongsTo(models.Member,{foreignKey:"MemberId"});
-    MemberShoe.belongsTo(models.Shoe,{foreignKey : "ShoeId"});
+    MemberShoe.belongsTo(models.Member, { foreignKey: "MemberId" });
+    MemberShoe.belongsTo(models.Shoe, { foreignKey: "ShoeId" });
   };
   
   return MemberShoe;
