@@ -25,8 +25,8 @@
             <b><%= member.shoe_size %></b>
           </li>
         </ul>
-        <% if (pageInfo.session.email == member.email) { %>
-          <a href="<%= `/mylist/edit/${member.id}` %>" class="btn btn-primary">Edit Profile</a>
+        <% if (pageInfo.session.user.email == member.email) { %>
+          <a href="<%= `/mylist/update/${member.id}` %>" class="btn btn-primary">Edit Profile</a>
         <% } %>
       </div>
     </div>
@@ -40,13 +40,13 @@
           <th scope="col">Name</th>
           <th scope="col">Brand</th>
           <th scope="col">Type</th>
-          <% if (pageInfo.session.email == member.email) { %>
+          <% if (pageInfo.session.user.email == member.email) { %>
             <th scope="col">Action</th>
           <% } %>
         </tr>
       </thead>
       
-      <% if (pageInfo.session.email == member.email) { %>
+      <% if (pageInfo.session.user.email == member.email) { %>
         <a class="btn btn-primary" href="/explore">Add Shoes</a>
       <% } %>
       
@@ -57,7 +57,7 @@
             <td><%= shoe.name %></td>
             <td><%= shoe.brand%></td>
             <td><%= shoe.type %></td>
-            <% if (pageInfo.session.email == member.email) { %>
+            <% if (pageInfo.session.user.email == member.email) { %>
               <td><a class="btn btn-danger" href="<%= `/mylist/delete/shoes/${shoe.id}` %>">Delete</a></td>
             <% } %>
           </tr>
