@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   }, { sequelize });
   
   MemberShoe.associate = function(models) {
-    // associations can be defined here
+    MemberShoe.belongsTo(models.Member,{foreignKey:"MemberId"});
+    MemberShoe.belongsTo(models.Shoe,{foreignKey : "ShoeId"});
   };
   
   return MemberShoe;

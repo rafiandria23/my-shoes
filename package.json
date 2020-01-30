@@ -25,10 +25,13 @@
   },
   "homepage": "https://github.com/rafiandria23/my-shoes#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "pg": "^7.17.1",
-    "sequelize": "^5.21.3"
+    "init": "^0.1.2",
+    "pg": "^7.18.1",
+    "sequelize": "^5.21.3",
+    "session": "^0.1.0"
   }
 }
