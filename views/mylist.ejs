@@ -65,7 +65,13 @@
       </tbody>
     </table>
     <!-- SHOES LIST -->
-
+    <form action="/community/addcomment/<%=member.id%>" method="POST">
+      <textarea name="Comment"  value="">Add your comment</textarea>
+      <input type="submit">
+    </form>
+    <%member.Comments.forEach(comment=>{%>
+     <textarea style="text-align: center;margin: auto;width: 50%;border: 3px solid; padding: 10px;" name="mycomment" id="" cols="50" rows="3" readonly><%=comment.Comment%></textarea><br><br>
+    <%})%>
     <!-- FOOTER -->
     <%- include('partials/footer.ejs') %> 
     <!-- FOOTER -->
