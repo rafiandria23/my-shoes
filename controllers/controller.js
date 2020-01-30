@@ -108,21 +108,21 @@ class Controller {
   }
 
   static updateMember(req, res) {
-    let objInput = {
+    const objInput = {
       name: req.body.name,
       username: req.body.username,
-      age: req.body.age,
+      age: Number(req.body.age),
       email: req.body.email,
       gender: req.body.gender,
-      shoe_size: req.body.shoe_size,
+      shoe_size: Number(req.body.shoe_size),
     };
 
-    Member.update(objInput, { where: { id: req.params.id } })
+    Member.update(objInput, { where: { id: req.params.memberId } })
       .then(member => {
         res.redirect("/mylist");
       })
       .catch(err => {
-        res.send(err);
+        res.send(objInput);
     });
   }
 

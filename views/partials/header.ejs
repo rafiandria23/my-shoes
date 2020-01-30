@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">MyShoes</a>
   
-    <h class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <% if (typeof pageInfo.session.user != "undefined") { %>
           <li class="nav-item <%= pageInfo.title.includes(pageInfo.session.user.name) ? 'active' : '' %>">
@@ -15,16 +15,25 @@
         <li class="nav-item <%= pageInfo.title == 'Explore' ? 'active' : '' %>">
           <a class="nav-link" href="/explore">Explore</a>
         </li>
-        <% if (typeof pageInfo.session.user != "undefined") { %>
-          <li class="nav-item">
-            <a class="btn btn-outline-light my-2 my-sm-0" href="/user/logout">Logout</a>
-          </li>
-        <% } else { %>
-          <li class="nav-item">
-            <a class="btn btn-outline-light my-2 my-sm-0" href="/user/login">Login</a>
-          </li>
-        <% } %>
       </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <% if (typeof pageInfo.session.user != "undefined") { %>
+          <a class="btn btn-outline-light my-2 my-sm-0" href="/user/logout">Logout</a>
+        <% } else { %>
+          <a class="btn btn-outline-light my-2 my-sm-0" href="/user/login">Login</a>
+        <% } %>
+      </form>
     </div>
   </nav>
+
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Shoes never felt so good.</h1>
+      <p class="lead text-muted">You are your choice.</p>
+      <p>
+        <a href="#" class="btn btn-primary my-2">Main call to action</a>
+        <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+      </p>
+    </div>
+  </section>
 </header>
