@@ -50,7 +50,7 @@ class Controller {
       })
       .then(member => {
         pageInfo.title = member.name;
-        pageInfo.session = req.session.user;
+        pageInfo.session = req.session;
         res.render("mylist", { pageInfo, member });
       })
       .catch(err => {
@@ -62,7 +62,7 @@ class Controller {
     const pageInfo = {};
     Member.findByPk(req.params.memberId, {include: [Shoe]})
       .then(member => {
-        pageInfo.session = req.session.user;
+        pageInfo.session = req.session;
         pageInfo.title = member.name;
         res.render("mylist", { pageInfo, member });
       })
@@ -88,38 +88,36 @@ class Controller {
       });
   }
 
-  static updateForm(req,res){
-    Member
-      .findOne({
-        where:{
-          id:req.params.id
-        }
+  static updateForm(req, res) {
+    const pageInfo = {};
+    Member.findByPk(req.params.memberId)
+      .then(member => {
+        pageInfo.title = `Edit Profile - ${member.name}`;
+        pageInfo.session = req.session;
+        res.render("edit", { pageInfo, member });
       })
-      .then(data=>{
-        res.send(data);
-      })
-      .catch(err=>{
+      .catch(err => {
         res.send(err);
-      })
+      });
   }
 
-  static updateMember(req,res){
-    let objInput={
-          name: req.body.name,
-          username:req.body.username,
-          age:req.body.age,
-          email:req.body.email,
-          shoe_size: req.body.shoe_size,
-    }
-    Member.update(objInput,{
-      where :
-      {
-        id:req.params.id
-      }
-    })
-    .then(()=>{
-      res.redirect("/mylist")
-    })
+  static updateMember(req, res) {
+    let objInput = {
+      name: req.body.name,
+      username: req.body.username,
+      age: req.body.age,
+      email: req.body.email,
+      gender: req.body.gender,
+      shoe_size: req.body.shoe_size,
+    };
+
+    Member.update(objInput, { where: { id: req.params.id } })
+      .then(member => {
+        res.redirect("/mylist");
+      })
+      .catch(err => {
+        res.send(err);
+    });
   }
 
   static deleteAccount(req, res) {
@@ -213,7 +211,8 @@ class Controller {
 
   static showExplore(req, res) {
     const pageInfo = {
-      title: "Explore"
+      title: "Explore",
+      session: req.session
     };
 
     Shoe.findAll()
