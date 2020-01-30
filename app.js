@@ -1,4 +1,5 @@
 'use strict';
+
 const Routes = require("./routes/member-route")
 const express = require('express');
 const session = require('express-session');
@@ -13,8 +14,6 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-app.use("/user",user);
-app.use("/",Routes);
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
-const { memberRoute } = require('./routes/member-route');
-
+app.use("/user", user);
+app.use("/", Routes);
+app.listen(port, () => console.log(`Server is running on PORT ${port}!`));
