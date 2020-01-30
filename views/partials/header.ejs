@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">MyShoes</a>
   
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse py-2">
       <ul class="navbar-nav mr-auto">
         <% if (typeof pageInfo.session.user != "undefined") { %>
           <li class="nav-item <%= pageInfo.title.includes(pageInfo.session.user.name) ? 'active' : '' %>">

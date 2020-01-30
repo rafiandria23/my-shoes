@@ -1,40 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('partials/head.ejs') %> 
+  <head>
+    <%- include('partials/head.ejs') %> 
+    <style>
+      .pb-cmnt-container {
+        margin-top: 70px;
+        margin-bottom: 30px;
+      }
+    
+      .pb-cmnt-textarea {
+        resize: none;
+        padding: 20px;
+        height: 130px;
+        width: 100%;
+        border: 1px solid #F2F2F2;
+      }
+    </style>
+  </head>
+
   <body>
     <!-- HEADER -->
     <%- include('partials/header.ejs') %>
     <!-- HEADER -->
 
     <!-- PROFILE CARD -->
-    <div class="card" style="width: 18rem;">
-      <img class="card-img-top" src="" alt="<%= member.name %>">
-      <div class="card-body">
-        <h5 class="card-title"><%= member.name %> </h5>
+    <div class="card container text-center mt-5" style="width: 18rem;">
+      <img class="card-img-top" src="<%= member.gender == "Male" ? "profile/default-male.jpg" : member.gender == "Female" ? "profile/default-female.jpg" : "profile/default-other.jpg" %>" alt="<%= member.name %>">
+      <div class="card-body my-3">
+        <h2 class="card-title my-3"><%= member.name %> </h2>
         <ul class="list-group">
-          <li class="list-group-item">
+          <li class="list-group-item text-left">
             <small>Username</small>
-            <b><%= member.username %></b>
+            <div class="text-right">
+              <b><%= member.username %></b>
+            </div>
           </li>
-          <li class="list-group-item">
+          <li class="list-group-item text-left">
             <small>Age</small>
-            <b><%= member.age %></b>
+            <div class="text-right">
+              <b><%= member.age %></b>
+            </div>
           </li>
-          <li class="list-group-item">
+          <li class="list-group-item text-left">
             <small>Shoe Size</small>
-            <b><%= member.shoe_size %></b>
+            <div class="text-right">
+              <b><%= member.shoe_size %></b>
+            </div>
           </li>
         </ul>
         <% if (pageInfo.session.user.email == member.email) { %>
-          <a href="<%= `/mylist/update/${member.id}` %>" class="btn btn-primary">Edit Profile</a>
+          <a href="<%= `/mylist/update/${member.id}` %>" class="btn btn-primary mt-5">Edit Profile</a>
         <% } %>
       </div>
     </div>
     <!-- PROFILE CARD -->
 
     <!-- SHOES LIST -->
-    <table class="table">
-      <thead class="thead-dark">
+    <% if (pageInfo.session.user.email == member.email) { %>
+      <div class="text-right my-4 container">
+        <a class="btn btn-primary" href="/explore">Add Shoes</a>
+      </div>
+    <% } %>
+
+    <table class="table table-hover container rounded jumbotron text-center">
+      <thead class="thead-dark rounded">
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Name</th>
@@ -45,10 +74,6 @@
           <% } %>
         </tr>
       </thead>
-      
-      <% if (pageInfo.session.user.email == member.email) { %>
-        <a class="btn btn-primary" href="/explore">Add Shoes</a>
-      <% } %>
       
       <tbody>
         <% member.Shoes.forEach(shoe => { %>
@@ -65,13 +90,37 @@
       </tbody>
     </table>
     <!-- SHOES LIST -->
-    <form action="/community/addcomment/<%=member.id%>" method="POST">
-      <textarea name="Comment"  value="">Add your comment</textarea>
-      <input type="submit">
-    </form>
-    <%member.Comments.forEach(comment=>{%>
-     <textarea style="text-align: center;margin: auto;width: 50%;border: 3px solid; padding: 10px;" name="mycomment" id="" cols="50" rows="3" readonly><%=comment.Comment%></textarea><br><br>
-    <%})%>
+
+
+
+    <!-- COMMENT SECTION -->
+    <div class="container rounded pb-cmnt-container">
+      <h2 class="text-center my-3">Comment Section</h2>
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <div class="card card-info">
+            <div class="card-block">
+              <form class="form-inline flex-row-reverse" action="/community/addcomment/<%= member.id %>" method="POST">
+                <textarea placeholder="Write your comment here!" class="pb-cmnt-textarea" name="Comment" value=""></textarea>
+                <button class="btn btn-primary my-3 mx-3" type="submit">Comment</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% member.Comments.forEach(comment => { %>
+      <div class="container card col-md-4 my-3">
+        <div class="card-body">
+          <h5 class="card-title"><b>Somebody</b>&ensp;<small>said</small></h5>
+          <p class="card-text"><%= comment.Comment %></p>
+          <small><cite title="Date"><%= Date(comment.createdAt); %></cite></small>
+        </div>
+      </div>
+    <% }); %>
+    <!-- COMMENT SECTION -->
+
     <!-- FOOTER -->
     <%- include('partials/footer.ejs') %> 
     <!-- FOOTER -->
