@@ -16,6 +16,7 @@ memberRoute.get("/community", Controller.showCommunity);
 memberRoute.get("/mylist/:memberId", Controller.showOtherProfile);
 memberRoute.get("/mylist", Controller.showMyList);
 memberRoute.get("/community",Controller.showExplore);
+memberRoute.post("/community/addcomment/:memberId", Controller.addComment);
 memberRoute.get("/mylist/update",Controller.updateForm);
 memberRoute.post("/mylist/update",Controller.updateMember);
 memberRoute.get("/mylist/addshoes/:shoeId", Controller.addShoes);

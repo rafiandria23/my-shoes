@@ -11,6 +11,13 @@ class Controller {
   }
   
   static memberLogin(req, res) {
+    const pageInfo = {
+      title: "Login",
+      session: req.session
+    };
+    if(req.body.username.length===0 || req.body.password.length === 0){
+      res.render("login", {pageInfo, errorMessages:["password and username must be filled"]})
+    }
     Member
       .findOne({
         where: {
@@ -35,9 +42,8 @@ class Controller {
         }
       })
       .catch(err => {
-        const errorMessages = err.message;
-        // console.log(err.message);
-        res.render("login", {errorMessage})
+        res.send("hallo")
+        //res.render("login", {errorMessage:[err.message]})
       });
   }
 
@@ -46,7 +52,7 @@ class Controller {
     const memberId = req.session.user.id;
     Member
       .findByPk(memberId, {
-        include: [Shoe]
+        include: [Shoe,Comment]
       })
       .then(member => {
         pageInfo.title = member.name;
@@ -60,7 +66,7 @@ class Controller {
 
   static showOtherProfile(req, res) {
     const pageInfo = {};
-    Member.findByPk(req.params.memberId, {include: [Shoe]})
+    Member.findByPk(req.params.memberId, {include: [Shoe,Comment]})
       .then(member => {
         pageInfo.session = req.session.user;
         pageInfo.title = member.name;
@@ -162,16 +168,18 @@ class Controller {
   }
 
   static addComment(req,res){
-    member: req.params.id;
+    let member= req.params.memberId;
     let objInput ={
-      memberId  : member,
+      MemberId  : member,
       Comment   : req.body.Comment
-
     }
     Comment
       .create(objInput)
       .then(()=>{
-        redirect("community/member")
+        res.redirect("back")
+      })
+      .catch(err=>{
+        res.send(err);
       })
   }
   static deleteShoes(req,res){
@@ -218,6 +226,7 @@ class Controller {
 
     Shoe.findAll()
       .then(shoes => {
+        pageInfo.session = req.session;
         res.render("explore", { pageInfo, shoes });
       })
       .catch(err => {
