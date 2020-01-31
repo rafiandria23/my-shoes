@@ -15,9 +15,11 @@ class Controller {
       title: "Login",
       session: req.session
     };
-    if(req.body.username.length===0 || req.body.password.length === 0){
-      res.render("login", {pageInfo, errorMessages:["password and username must be filled"]})
+
+    if(req.body.username.length == 0 || req.body.password.length == 0){
+      res.render("login", { pageInfo, errorMessages: ["Password and username cannot be empty!"] });
     }
+
     Member
       .findOne({
         where: {
@@ -32,9 +34,8 @@ class Controller {
             age: data.age,
             id: data.id,
             name: data.name,
-            age: data.age
+            gender: data.gender
           }
-
           res.redirect("/community");
         }
         else {
@@ -42,17 +43,17 @@ class Controller {
         }
       })
       .catch(err => {
-        res.send("hallo")
-        //res.render("login", {errorMessage:[err.message]})
+        res.send("error");
       });
   }
 
   static showMyList(req,res) {
     const pageInfo = {};
     const memberId = req.session.user.id;
+
     Member
       .findByPk(memberId, {
-        include: [Shoe,Comment]
+        include: [Shoe, Comment]
       })
       .then(member => {
         pageInfo.title = member.name;
@@ -66,10 +67,11 @@ class Controller {
 
   static showOtherProfile(req, res) {
     const pageInfo = {};
-    Member.findByPk(req.params.memberId, {include: [Shoe,Comment]})
+    Member.findByPk(req.params.memberId, { include: [Shoe, Comment] })
       .then(member => {
         pageInfo.session = req.session;
         pageInfo.title = member.name;
+        
         res.render("mylist", { pageInfo, member });
       })
       .catch(err => {
@@ -82,6 +84,7 @@ class Controller {
       title: 'Community',
       session: req.session
     };
+
     Member
       .findAll({
         include: [Shoe], order: [["id", "ASC"]]
@@ -141,45 +144,64 @@ class Controller {
   }
 
   static registerForm(req, res) {
-    res.render("register");
+    const pageInfo = {
+      title: "Register",
+      session: req.session
+    };
+    res.render("register", { pageInfo });
   }
 
   static registerMember(req, res) {
+    const pageInfo = {
+      title: "Register",
+      session: req.session
+    };
+
     const objInput = {
       name: req.body.name,
       username: req.body.username,
       gender: req.body.gender,
       password: req.body.password,
-      age: req.body.age,
+      age: Number(req.body.age),
       email: req.body.email,
-      shoe_size: req.body.shoe_size
+      shoe_size: Number(req.body.shoe_size)
     };
 
-    Member
-      .create(objInput)
+    Member.create(objInput)
       .then(data => {
+        req.session.user = {
+          name: req.body.name,
+          username: req.body.username,
+          gender: req.body.gender,
+          age: req.body.age,
+          email: req.body.email,
+          shoe_size: req.body.shoe_size
+        }
         res.redirect("/community");
+      })
+      .catch(err => {
+        const errorMessages = err.message;
+        res.render("register", { pageInfo, errorMessages });
+      });
+  }
+
+  static addComment(req, res) {
+    const member = req.params.memberId;
+    const objInput = {
+      MemberId: member,
+      Comment: req.body.Comment
+    };
+
+    Comment
+      .create(objInput)
+      .then(result => {
+        res.redirect("back")
       })
       .catch(err => {
         res.send(err);
       });
   }
-
-  static addComment(req,res){
-    let member= req.params.memberId;
-    let objInput ={
-      MemberId  : member,
-      Comment   : req.body.Comment
-    }
-    Comment
-      .create(objInput)
-      .then(()=>{
-        res.redirect("back")
-      })
-      .catch(err=>{
-        res.send(err);
-      })
-  }
+  
   static deleteShoes(req,res){
     MemberShoe
       .destroy({

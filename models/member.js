@@ -15,19 +15,25 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type:DataTypes.STRING,
       validate:{
-        len: [6,12]
+        len: {
+          args: [6, 12],
+          msg: "Username should be between 6 and 12 characters!"
+        }
       }
     },
     password:{
       type:DataTypes.STRING,
       validate:{
-        len:[6,12]
+        len: {
+          args: [6, 12],
+          msg: "Password should be between 6 and 12 characters!"
+        }
       }
     },  
     gender: {
       type:DataTypes.STRING,
       validate:{
-        isIn: [['Male', 'Female',"Other"]]
+        isIn: [["Male", "Female","Other"]]
       }
     },
     age:{
@@ -53,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       beforeCreate: (instance,options) => {
         var salt = bcrypt.genSaltSync(10);
         var hash = bcrypt.hashSync(instance.password, salt);
-        instance.password= hash
+        instance.password = hash;
       }
     },
     sequelize });

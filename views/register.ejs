@@ -8,7 +8,7 @@
   <!-- HEADER -->
 
 
-<form method="POST">
+<form class="container" method="POST">
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="name">Full Name</label>
@@ -48,15 +48,24 @@
     </div>
   </div>
   <% if (typeof errorMessages != "undefined") { %>
-    <% errorMessages.forEach(errorMessage => { %>
+    <% if (typeof errorMessages == "string") { %>
       <div class="alert alert-danger btn" role="alert">
-        <%= errorMessage %> 
+        <%= errorMessages %>
       </div>
-    <% }); %>
+    <% } else { %>
+      <% errorMessages.forEach(errorMessage => { %>
+        <div class="alert alert-danger btn" role="alert">
+          <%= errorMessage %> 
+        </div>
+      <% }); %>
     <br>
+    <% } %>
   <% } %>
+  <br>
   <button type="submit" class="btn btn-primary">Sign Up</button>
+  <p class="my-2">Have an account? <a href="/user/login">Login</a></p>
 </form>
+
 
 
   <!-- FOOTER -->

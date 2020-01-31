@@ -8,8 +8,8 @@
   <!-- HEADER -->
 
 
-<table class="table">
-  <thead class="thead-dark">
+<table class="table table-hover container text-center rounded jumbotron my-5">
+  <thead class="thead-dark rounded">
     <tr>
       <th scope="col">No.</th>
       <th scope="col">Username</th>
@@ -25,7 +25,11 @@
         <td><%= member.username %></td>
         <td><%= member.shoe_size %></td>
         <td><%= member.Shoes.length %></td>
-        <td><a href="<%= `/mylist/${member.id}` %>" class="btn btn-primary">View Profile<a></td>
+        <% if (pageInfo.session.user.email == member.email) { %>
+          <td><a href="<%= `/mylist` %>" class="btn btn-primary">View Profile<a></td>
+        <% } else { %>
+          <td><a href="<%= `/mylist/${member.id}` %>" class="btn btn-primary">View Profile<a></td>
+        <% } %>
       </tr>
     <% }); %>
   </tbody>

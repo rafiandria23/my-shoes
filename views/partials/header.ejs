@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">MyShoes</a>
   
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse py-2">
       <ul class="navbar-nav mr-auto">
         <% if (typeof pageInfo.session.user != "undefined") { %>
           <li class="nav-item <%= pageInfo.title.includes(pageInfo.session.user.name) ? 'active' : '' %>">
@@ -27,13 +27,16 @@
   </nav>
 
   <section class="jumbotron text-center">
-    <div class="container">
-      <h1 class="jumbotron-heading">Shoes never felt so good.</h1>
-      <p class="lead text-muted">You are your choice.</p>
-      <p>
-        <a href="#" class="btn btn-primary my-2">Main call to action</a>
-        <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-      </p>
-    </div>
+    <% if (typeof pageInfo.session.user != "undefined") { %>
+      <div class="container">
+        <h1 class="jumbotron-heading"><%= `Welcome, ${helpers.addPrefix(pageInfo.session.user.name, pageInfo.session.user.gender)}.` %></h1>
+        <p class="lead text-muted">You are your choice.</p>
+      </div>
+    <% } else { %>
+      <div class="container">
+        <h1 class="jumbotron-heading">Shoes never felt so good.</h1>
+        <p class="lead text-muted">You are your choice.</p>
+      </div>
+    <% } %>
   </section>
 </header>
