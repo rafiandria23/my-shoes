@@ -25,7 +25,11 @@
         <td><%= member.username %></td>
         <td><%= member.shoe_size %></td>
         <td><%= member.Shoes.length %></td>
-        <td><a href="<%= `/mylist/${member.id}` %>" class="btn btn-primary">View Profile<a></td>
+        <% if (pageInfo.session.user.email == member.email) { %>
+          <td><a href="<%= `/mylist` %>" class="btn btn-primary">View Profile<a></td>
+        <% } else { %>
+          <td><a href="<%= `/mylist/${member.id}` %>" class="btn btn-primary">View Profile<a></td>
+        <% } %>
       </tr>
     <% }); %>
   </tbody>
