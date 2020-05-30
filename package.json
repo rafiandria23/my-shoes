@@ -4,8 +4,8 @@
   "description": "Hacktiv8 Phase 1 Pair Programming.",
   "main": "app.js",
   "scripts": {
-    "test": "nodemon app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
