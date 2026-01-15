@@ -27,7 +27,7 @@
   "homepage": "https://github.com/rafiandria23/my-shoes#readme",
   "dependencies": {
     "bcryptjs": "^3.0.0",
-    "ejs": "^3.1.7",
+    "ejs": "^4.0.0",
     "express": "^5.0.0",
     "express-session": "^1.17.0",
     "init": "^0.1.2",
